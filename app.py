@@ -64,22 +64,6 @@ strong {
 button {
     font-size: 15px !important;
 }
-
-/* Matikan scroll vertikal (tetap dipertahankan) */
-html, body {
-    overflow-y: hidden !important;
-}
-</style>
-""")
-
-# ======================================================
-# MATIKAN SCROLL VERTIKAL (SENGAJA)
-# ======================================================
-st.html("""
-<style>
-html, body {
-    overflow-y: hidden !important;
-}
 </style>
 """)
 
