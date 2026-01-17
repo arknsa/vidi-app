@@ -52,12 +52,12 @@ def render_detect(go):
     col_ex1, col_ex2 = st.columns(2, gap="large")
 
     with col_ex1:
-        if st.button("🧪 Contoh 1 — Kerusakan Ringan", use_container_width=True):
+        if st.button("🧪 Contoh 1 — Kerusakan Ringan", width="stretch"):
             st.session_state.scenario_images = load_scenario("scenario_1")
             st.session_state.inference_results = None
 
     with col_ex2:
-        if st.button("🧪 Contoh 2 — Kerusakan Lebih Jelas", use_container_width=True):
+        if st.button("🧪 Contoh 2 — Kerusakan Lebih Jelas", width="stretch"):
             st.session_state.scenario_images = load_scenario("scenario_2")
             st.session_state.inference_results = None
 
@@ -78,7 +78,7 @@ def render_detect(go):
             st.image(
                 img,
                 caption=label,
-                use_container_width=True
+                 width="stretch"
             )
             return img
 
@@ -141,13 +141,13 @@ def render_detect(go):
         detect_clicked = st.button(
             "🚀 Deteksi Kerusakan",
             disabled=not valid,
-            use_container_width=True
+            width="stretch"
         )
 
     with col_right:
         if st.button(
             "🔄 Ganti Gambar",
-            use_container_width=True
+            width="stretch"
         ):
             st.session_state.scenario_images = {}
             st.session_state.inference_results = None
@@ -191,7 +191,7 @@ def render_detect(go):
                 st.markdown(f"### {side}")
                 st.image(
                     annotated,
-                    use_container_width=True
+                    width="stretch"
                 )
                 st.caption(
                     f"{meta['label']} | Confidence: {meta['confidence']:.2f}"
@@ -212,12 +212,12 @@ def render_detect(go):
     col_nav_left, col_nav_mid, col_nav_right = st.columns([1, 6, 1])
 
     with col_nav_left:
-        st.button("⬅️ Beranda", on_click=go, args=("home",), use_container_width=True)
+        st.button("⬅️ Beranda", on_click=go, args=("home",), width="stretch")
 
     with col_nav_right:
         st.button(
             "Daftar Kerusakan ➡️",
             on_click=go,
             args=("classes",),
-            use_container_width=True
+            width="stretch"
         )

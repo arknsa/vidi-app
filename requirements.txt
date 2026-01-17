@@ -1,13 +1,14 @@
-streamlit
+# ===== UI =====
+streamlit==1.53.0
 
 # ===== CORE ML =====
-torch
-torchvision
-numpy
+torch==2.9.1
+torchvision==0.24.1
+numpy==2.2.6
 
 # ===== YOLO =====
-ultralytics
+ultralytics==8.4.5
 
-# ===== IMAGE =====
-opencv-python-headless
-Pillow
+# ===== IMAGE (HEADLESS ONLY) =====
+opencv-python-headless==4.12.0.88
+Pillow==12.1.0

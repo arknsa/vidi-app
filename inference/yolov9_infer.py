@@ -3,6 +3,10 @@ import torch
 import numpy as np
 from ultralytics import YOLO
 from PIL import Image
+import os
+
+os.environ["OPENCV_VIDEOIO_PRIORITY_MSMF"] = "0"
+os.environ["OMP_NUM_THREADS"] = "1"
 
 # ===============================
 # Konfigurasi Model

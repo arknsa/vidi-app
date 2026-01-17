@@ -53,100 +53,43 @@ CLASSES_SHOWCASE = [
 ]
 
 def render_classes(go):
-
     st.markdown("## Daftar Kerusakan Kendaraan")
 
-    # ===============================
-    # RESPONSIVE CSS (KHUSUS CLASSES)
-    # ===============================
-    st.html("""
-    <style>
+    rows = [
+        CLASSES_SHOWCASE[0:3],
+        CLASSES_SHOWCASE[3:6],
+    ]
 
-    /* Aktifkan scroll KHUSUS halaman ini */
-    html, body {
-        overflow-y: auto !important;
-    }
+    for row in rows:
+        cols = st.columns(3, gap="large")
 
-    .card-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        margin-top: 20px;
-    }
-
-    /* Tablet */
-    @media (max-width: 1024px) {
-        .card-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    /* Mobile */
-    @media (max-width: 640px) {
-        .card-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .card {
-        border-radius: 14px;
-        overflow: hidden;
-        background: #ffffff;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        display: flex;
-        flex-direction: column;
-    }
-
-    .card img {
-        width: 100%;
-        height: auto;          /* 🔑 PENTING */
-        object-fit: cover;
-    }
-
-    .card-body {
-        padding: 16px;
-    }
-
-    .card-title {
-        font-size: 18px;
-        font-weight: 600;
-        font-style: italic;
-        margin-bottom: 6px;
-    }
-
-    .card-desc {
-        font-size: 15px;
-        line-height: 1.6;
-        opacity: 0.85;
-        text-align: justify;
-    }
-
-    </style>
-    """)
-
-    cards_html = '<div class="card-grid">'
-
-    for item in CLASSES_SHOWCASE:
-        cards_html += f"""
-        <div class="card">
-            <img src="data:image/jpeg;base64,{img_to_base64(item['img'])}">
-            <div class="card-body">
-                <div class="card-title">{item['name']}</div>
-                <div class="card-desc">{item['desc']}</div>
-            </div>
-        </div>
-        """
-
-    cards_html += "</div>"
-
-    st.html(cards_html)
+        for col, item in zip(cols, row):
+            with col:
+                st.image(
+                    item["img"],
+                    use_container_width=True
+                )
+                st.markdown(
+                    f"**{item['name']}**",
+                )
+                st.caption(item["desc"])
 
     st.divider()
 
     col_left, col_mid, col_right = st.columns([1, 6, 1])
 
     with col_left:
-        st.button("⬅️ Prediksi Kerusakan", on_click=go, args=("detect",), use_container_width=True)
+        st.button(
+            "⬅️ Prediksi Kerusakan",
+            on_click=go,
+            args=("detect",),
+            width="stretch"
+        )
 
     with col_right:
-        st.button("Beranda ➡️", on_click=go, args=("home",), use_container_width=True)
+        st.button(
+            "Beranda ➡️",
+            on_click=go,
+            args=("home",),
+            width="stretch"
+        )
