@@ -4,18 +4,32 @@ import subprocess
 import os
 
 # ===============================
-# HARUS PALING ATAS
+# HARD RESET OPENCV (WAJIB)
 # ===============================
 
-# Paksa buang OpenCV GUI (penyebab libGL error)
 subprocess.run(
-    [sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python"],
+    [sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python", "opencv-python-headless"],
+    stdout=subprocess.DEVNULL,
+    stderr=subprocess.DEVNULL,
+)
+
+subprocess.run(
+    [sys.executable, "-m", "pip", "install", "--no-cache-dir", "opencv-python-headless==4.12.0.88"],
     stdout=subprocess.DEVNULL,
     stderr=subprocess.DEVNULL,
 )
 
 # Guard environment
 os.environ["OMP_NUM_THREADS"] = "1"
+
+# ===============================
+# BARU IMPORT LIB ML
+# ===============================
+
+import torch
+import numpy as np
+from ultralytics import YOLO
+from PIL import Image
 
 # ===============================
 # BARU IMPORT LIB LAIN
