@@ -1,11 +1,11 @@
 # inference/yolov9_infer.py
-import torch
-import numpy as np
-from ultralytics import YOLO
-from PIL import Image
 import sys
 import subprocess
 import os
+
+# ===============================
+# HARUS PALING ATAS
+# ===============================
 
 # Paksa buang OpenCV GUI (penyebab libGL error)
 subprocess.run(
@@ -16,6 +16,16 @@ subprocess.run(
 
 # Guard environment
 os.environ["OMP_NUM_THREADS"] = "1"
+
+# ===============================
+# BARU IMPORT LIB LAIN
+# ===============================
+
+import torch
+import numpy as np
+from ultralytics import YOLO
+from PIL import Image
+
 
 # ===============================
 # Konfigurasi Model
