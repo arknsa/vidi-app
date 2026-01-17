@@ -3,9 +3,18 @@ import torch
 import numpy as np
 from ultralytics import YOLO
 from PIL import Image
+import sys
+import subprocess
 import os
 
-os.environ["OPENCV_VIDEOIO_PRIORITY_MSMF"] = "0"
+# Paksa buang OpenCV GUI (penyebab libGL error)
+subprocess.run(
+    [sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python"],
+    stdout=subprocess.DEVNULL,
+    stderr=subprocess.DEVNULL,
+)
+
+# Guard environment
 os.environ["OMP_NUM_THREADS"] = "1"
 
 # ===============================
