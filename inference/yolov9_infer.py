@@ -2,23 +2,6 @@
 import sys
 import subprocess
 import os
-
-# ===============================
-# HARD RESET OPENCV (WAJIB)
-# ===============================
-
-subprocess.run(
-    [sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python", "opencv-python-headless"],
-    stdout=subprocess.DEVNULL,
-    stderr=subprocess.DEVNULL,
-)
-
-subprocess.run(
-    [sys.executable, "-m", "pip", "install", "--no-cache-dir", "opencv-python-headless==4.12.0.88"],
-    stdout=subprocess.DEVNULL,
-    stderr=subprocess.DEVNULL,
-)
-
 # Guard environment
 os.environ["OMP_NUM_THREADS"] = "1"
 
