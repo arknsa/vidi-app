@@ -1,6 +1,13 @@
-streamlit>=1.31
-torch==2.2.2
-torchvision==0.17.2
+streamlit
+
+# ===== CORE ML =====
+torch
+torchvision
 numpy
+
+# ===== YOLO =====
+ultralytics
+
+# ===== IMAGE =====
 opencv-python-headless
 Pillow
