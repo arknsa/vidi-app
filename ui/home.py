@@ -30,11 +30,13 @@ def render_home(go):
         </p>
     </div>
     """)
-
+    st.divider()
     st.markdown("### Formulir Evaluasi")
     st.markdown(
         "[https://forms.gle/nXxWEzLSR3G6DWiXA](https://forms.gle/nXxWEzLSR3G6DWiXA)"
     )
+
+    st.divider()
 
     st.markdown("### Cara Menggunakan Aplikasi")
     st.markdown(
@@ -54,6 +56,8 @@ def render_home(go):
     st.markdown(
         "Navigasi antarhalaman dapat dilakukan menggunakan tombol di bawah ini."
     )
+
+    st.divider()
 
     col_left, col_mid, col_right = st.columns([1, 6, 1])
 
