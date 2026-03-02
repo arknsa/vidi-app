@@ -84,7 +84,7 @@ def render_detect(go):
 
         # Manual upload
         file = st.file_uploader(
-            label,
+            f"{label} (Unggah gambar atau ambil foto langsung dari kamera)",
             type=["jpg", "jpeg"],
             key=f"upload_{key}",
         )
@@ -97,7 +97,10 @@ def render_detect(go):
     # Image Inputs (2 x 2 Grid)
     # ==================================================
     st.markdown("### Unggah Citra Kendaraan")
-
+    st.info(
+        "Anda dapat mengunggah gambar dari galeri perangkat atau "
+        "mengambil foto secara langsung menggunakan kamera (jika diakses melalui smartphone)."
+    )
     row1 = st.columns(2, gap="large")
     row2 = st.columns(2, gap="large")
 
