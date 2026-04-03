@@ -22,6 +22,49 @@ def load_scenario(scenario_name: str):
 
 
 # ======================================================
+# Image Input Component (Upload / Camera Mode)
+# ======================================================
+def image_input(label: str, key: str):
+
+    st.markdown(f"### 📸 {label}")
+
+    # Jika menggunakan contoh skenario
+    if key in st.session_state.scenario_images:
+        img = st.session_state.scenario_images[key]
+        st.image(img, width="stretch")
+        return img
+
+    # Mode pilihan sumber gambar
+    mode = st.radio(
+        "Pilih sumber gambar:",
+        ["📁 Unggah dari Galeri", "📷 Ambil Foto Sekarang"],
+        horizontal=True,
+        key=f"mode_{key}"
+    )
+
+    # Upload mode
+    if mode == "📁 Unggah dari Galeri":
+        file = st.file_uploader(
+            "Unggah gambar (.jpg / .jpeg)",
+            type=["jpg", "jpeg"],
+            key=f"upload_{key}",
+        )
+        if file:
+            return Image.open(file).convert("RGB")
+
+    # Camera mode
+    else:
+        photo = st.camera_input(
+            "Ambil foto menggunakan kamera perangkat",
+            key=f"camera_{key}"
+        )
+        if photo:
+            return Image.open(photo).convert("RGB")
+
+    return None
+
+
+# ======================================================
 # Main Renderer
 # ======================================================
 def render_detect(go):
@@ -31,8 +74,8 @@ def render_detect(go):
     # ==================================================
     st.markdown("## Prediksi Kerusakan Kendaraan")
     st.caption(
-        "Unggah citra kendaraan dari empat sisi untuk mendeteksi jenis kerusakan "
-        "secara otomatis menggunakan model *computer vision*."
+        "Unggah atau ambil foto kendaraan dari empat sisi "
+        "(depan, belakang, kiri, kanan) untuk melakukan deteksi kerusakan secara otomatis."
     )
 
     # ==================================================
@@ -52,55 +95,22 @@ def render_detect(go):
     col_ex1, col_ex2 = st.columns(2, gap="large")
 
     with col_ex1:
-        if st.button("🧪 Contoh 1 — Kerusakan Ringan", width="stretch"):
+        if st.button("🧪 Contoh 1 — Kerusakan Ringan", use_container_width=True):
             st.session_state.scenario_images = load_scenario("scenario_1")
             st.session_state.inference_results = None
 
     with col_ex2:
-        if st.button("🧪 Contoh 2 — Kerusakan Lebih Jelas", width="stretch"):
+        if st.button("🧪 Contoh 2 — Kerusakan Lebih Jelas", use_container_width=True):
             st.session_state.scenario_images = load_scenario("scenario_2")
             st.session_state.inference_results = None
-
-    st.caption(
-        "Gambar contoh disediakan agar pengguna dapat memahami alur kerja sistem "
-        "tanpa perlu menyiapkan foto kendaraan sendiri."
-    )
 
     st.divider()
 
     # ==================================================
-    # Image Input Helper
-    # ==================================================
-    def image_input(label: str, key: str):
-        # From example set
-        if key in st.session_state.scenario_images:
-            img = st.session_state.scenario_images[key]
-            st.image(
-                img,
-                caption=label,
-                 width="stretch"
-            )
-            return img
-
-        # Manual upload
-        file = st.file_uploader(
-            f"{label} (Unggah gambar atau ambil foto langsung dari kamera)",
-            type=["jpg", "jpeg"],
-            key=f"upload_{key}",
-        )
-        if file:
-            return Image.open(file).convert("RGB")
-
-        return None
-
-    # ==================================================
     # Image Inputs (2 x 2 Grid)
     # ==================================================
-    st.markdown("### Unggah Citra Kendaraan")
-    st.info(
-        "Anda dapat mengunggah gambar dari galeri perangkat atau "
-        "mengambil foto secara langsung menggunakan kamera (jika diakses melalui smartphone)."
-    )
+    st.markdown("## Unggah / Ambil Citra Kendaraan")
+
     row1 = st.columns(2, gap="large")
     row2 = st.columns(2, gap="large")
 
@@ -126,15 +136,16 @@ def render_detect(go):
     # ==================================================
     # Validation
     # ==================================================
-    valid = all(img is not None for img in images.values())
+    valid = any(img is not None for img in images.values())
 
     if not valid:
+        st.markdown("### Status Kelengkapan Gambar")
         for side, img in images.items():
             if img is None:
                 st.warning(f"{side}: gambar belum tersedia")
 
     # ==================================================
-    # Action Buttons (SEJAJAR & KONSISTEN)
+    # Action Buttons
     # ==================================================
     st.markdown("### Aksi")
 
@@ -144,37 +155,43 @@ def render_detect(go):
         detect_clicked = st.button(
             "🚀 Deteksi Kerusakan",
             disabled=not valid,
-            width="stretch"
+            use_container_width=True
         )
 
     with col_right:
         if st.button(
             "🔄 Ganti Gambar",
-            width="stretch"
+            use_container_width=True
         ):
             st.session_state.scenario_images = {}
             st.session_state.inference_results = None
 
             for k in ["Front", "Back", "Left", "Right"]:
                 st.session_state.pop(f"upload_{k}", None)
+                st.session_state.pop(f"camera_{k}", None)
+                st.session_state.pop(f"mode_{k}", None)
 
             st.rerun()
 
     # ==================================================
-    # Run Inference (Only Once)
+    # Run Inference
     # ==================================================
     if detect_clicked:
         results = {}
+
         for side, img in images.items():
-            annotated, meta = run_inference(img, side)
-            results[side] = (annotated, meta)
+            if img is not None:
+                annotated, meta = run_inference(img, side)
+                results[side] = (annotated, meta)
 
         st.session_state.inference_results = results
 
     # ==================================================
-    # Display Results (Persistent)
+    # Display Results
     # ==================================================
     if st.session_state.inference_results:
+
+        st.divider()
         st.markdown("## Hasil Deteksi")
 
         row1 = st.columns(2, gap="large")
@@ -192,12 +209,10 @@ def render_detect(go):
 
             with col:
                 st.markdown(f"### {side}")
-                st.image(
-                    annotated,
-                    width="stretch"
-                )
+                st.image(annotated, width="stretch")
+
                 st.caption(
-                    f"{meta['label']} | Confidence: {meta['confidence']:.2f}"
+                    f"Prediksi: {meta['label']} | Confidence: {meta['confidence']:.2f}"
                 )
 
                 st.download_button(
@@ -205,22 +220,28 @@ def render_detect(go):
                     data=image_to_bytes(annotated),
                     file_name=f"hasil_{side.lower()}.jpg",
                     mime="image/jpeg",
+                    use_container_width=True
                 )
 
     st.divider()
 
     # ==================================================
-    # Navigation Buttons (CONSISTENT GRID)
+    # Navigation
     # ==================================================
     col_nav_left, col_nav_mid, col_nav_right = st.columns([1, 6, 1])
 
     with col_nav_left:
-        st.button("⬅️ Beranda", on_click=go, args=("home",), width="stretch")
+        st.button(
+            "⬅️ Beranda",
+            on_click=go,
+            args=("home",),
+            use_container_width=True
+        )
 
     with col_nav_right:
         st.button(
             "Daftar Kerusakan ➡️",
             on_click=go,
             args=("classes",),
-            width="stretch"
+            use_container_width=True
         )
