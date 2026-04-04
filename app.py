@@ -8,7 +8,7 @@ from ui.detect import render_detect
 # PAGE CONFIG
 # ======================================================
 st.set_page_config(
-    page_title="VIDI – Visual Intelligence for Damage Inspection",
+    page_title="VIDI – Visual Intelligence for Car Damage Detection",
     page_icon="🔍",
     layout="wide"
 )

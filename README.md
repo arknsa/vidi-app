@@ -1,5 +1,5 @@
 # VIDI  
-**Visual Intelligence for Vehicle Damage Inspection**
+**Visual Intelligence for Car Damage Detection**
 
 VIDI merupakan prototipe aplikasi web berbasis *computer vision* yang dikembangkan untuk mendukung proses inspeksi kerusakan kendaraan mobil secara visual. Aplikasi ini menjadi bagian dari penelitian skripsi yang berfokus pada **perbandingan arsitektur deteksi objek berbasis Convolutional Neural Network (CNN) dan Transformer**, dengan studi kasus deteksi kerusakan kendaraan menggunakan **Car Damage Detection Dataset (CarDD)**.
 
