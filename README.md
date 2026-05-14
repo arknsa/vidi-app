@@ -9,7 +9,7 @@ Aplikasi VIDI dirancang sebagai antarmuka interaktif yang dapat digunakan oleh p
 
 ## 🌐 Demo Aplikasi
 🔗 **Website (Streamlit App)**  
-> *([VIDI](https://cardd-vidi.streamlit.app/)*
+> *[VIDI](https://cardd-vidi.streamlit.app/)*
 
 ---
 
